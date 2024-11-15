@@ -1,27 +1,6 @@
 cmake_minimum_required(VERSION 3.18...3.26)
 project(rte-rrtmgp)
 
-# Helper function to check if a value is in a list
-function(check_valid_option variable_name value valid_options)
-    list(FIND ${valid_options} ${value} index)
-    if (index EQUAL -1)
-        message(FATAL_ERROR
-            "${variable_name} has an invalid value: '${value}'.\n"
-            "Valid options are: ${${valid_options}}.")
-    endif()
-endfunction()
-
-set(VALID_RTE_KERNELS "ACCEL" "EXTERN" "DEFAULT")
-set(RTE_KERNELS "DEFAULT")
-
-# Set the RTE_KERNELS value to upper case only
-string(TOUPPER "${RTE_KERNELS}" RTE_KERNELS)
-
-# Validate RTE_KERNELS
-check_valid_option("RTE_KERNELS" "${RTE_KERNELS}" "VALID_RTE_KERNELS")
-
-message(STATUS "RTE_KERNELS: ${RTE_KERNELS}")
-
 # Python paths
 set(PYTHON_EXECUTABLE "/home/vkm/code/makepath/pyRTE-RRTMGP/.venv/bin/python")
 set(PYTHON_INCLUDE_DIR "/home/vkm/code/makepath/pyRTE-RRTMGP/.venv/include/python3.10")
@@ -51,22 +30,6 @@ if (UNIX AND NOT APPLE)
     set(LINUX TRUE)
 endif()
 
-# Fortran compiler selection
-set(PREFERRED_FC_COMPILERS gfortran ifort gfortran-10 gfortran-11 gfortran-12 f77)
-
-foreach(compiler IN LISTS PREFERRED_FC_COMPILERS)
-    find_program(FOUND_COMPILER NAMES ${compiler})
-    if(FOUND_COMPILER)
-        set(CMAKE_Fortran_COMPILER ${FOUND_COMPILER})
-        message(STATUS "Using Fortran compiler: ${FOUND_COMPILER}")
-        break()
-    endif()
-endforeach()
-
-if(NOT CMAKE_Fortran_COMPILER)
-    message(FATAL_ERROR "No suitable Fortran compiler found")
-endif()
-
 # Include ExternalProject module
 include(ExternalProject REQUIRED)
 
@@ -74,8 +37,9 @@ include(ExternalProject REQUIRED)
 set(BUILD_COMMAND_STRING
     "rm -rf build && "
     "mkdir build && "
-    "cd build && cmake .. -DRTE_KERNELS=${RTE_KERNELS} && "
+    "cd build && cmake .. -DRTE_KERNELS=default && "
     "cmake --build . -j8"
+    # "make -C build -j ${N}"
 )
 
 ExternalProject_Add(
@@ -103,8 +67,6 @@ add_dependencies(${TARGET_NAME} wait_for_rte_rrtmgp_libs)
 target_include_directories(${TARGET_NAME} PUBLIC
     ${RTE_RRTMGP_DIR}/rte-kernels/api/
     ${RTE_RRTMGP_DIR}/rrtmgp-kernels/api/
-    ${CMAKE_Fortran_MODULE_DIRECTORY}
-    ${RTE_RRTMGP_DIR}/build/modules
 )
 
 target_link_directories(${TARGET_NAME} PUBLIC
@@ -116,10 +78,10 @@ target_link_directories(${TARGET_NAME} PUBLIC
 )
 
 target_link_libraries(${TARGET_NAME} PUBLIC
-    librtekernels.a
-    librte.a
-    librrtmgpkernels.a
-    librrtmgp.a
+    rte
+    rrtmgp
+    rtekernels
+    rrtmgpkernels
 )
 
 target_compile_definitions(${TARGET_NAME} PRIVATE
