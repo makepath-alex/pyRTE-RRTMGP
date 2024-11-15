@@ -163,7 +163,7 @@ Using conda is the recommended method because conda will take care of the system
 
 ### Installation with pip
 
-You also have the option to build and install the package with pip. This should work with macOS and Linux systems but requires you to install the system dependencies manually.
+You also have the option to build and install the package with pip and have at least `python3.9`. This should work with macOS and Linux systems but requires you to install the system dependencies manually. 
 
 #### Mac OS
 
@@ -189,4 +189,5 @@ Once built, the module will be located in a folder called `pyrte_rrtmgp`
 
 * Go to the 'tests' folder: `cd tests/`
 * Install the test prerequisites (if you haven't already) by running `pip3 install -r requirements-test.txt`
-* Run `pytest tests`
+* Go back to the root folder of the repo folder: `cd ..`
+* Run `pytest`
