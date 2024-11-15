@@ -1,11 +1,7 @@
 cmake_minimum_required(VERSION 3.18...3.26)
 project(rte-rrtmgp)
 
-# Python paths
-set(PYTHON_EXECUTABLE "/home/vkm/code/makepath/pyRTE-RRTMGP/.venv/bin/python")
-set(PYTHON_INCLUDE_DIR "/home/vkm/code/makepath/pyRTE-RRTMGP/.venv/include/python3.10")
-set(PYTHON_LIBRARY "/home/vkm/code/makepath/pyRTE-RRTMGP/.venv/lib/libpython3.10.so")
-
+SET(RTE_RRTMGP_PATH /home/vkm/code/makepath/rte-rrtmgp/.git) # https://github.com/earth-system-radiation/rte-rrtmgp.git
 set(RTE_RRTMGP_DIR  ${CMAKE_SOURCE_DIR}/build/rte-rrtmgp/)
 set(RRTMGP_LIB_PATH ${RTE_RRTMGP_DIR}/build/rrtmgp-frontend/librrtmgp.a)
 set(RTE_LIB_PATH    ${RTE_RRTMGP_DIR}/build/rte-frontend/librte.a)
@@ -44,7 +40,7 @@ set(BUILD_COMMAND_STRING
 
 ExternalProject_Add(
     rte-rrtmgp
-    GIT_REPOSITORY /home/vkm/code/makepath/rte-rrtmgp/.git
+    GIT_REPOSITORY ${RTE_RRTMGP_PATH}
     GIT_TAG origin/cmake
     GIT_SHALLOW TRUE
     SOURCE_DIR ${RTE_RRTMGP_DIR}
