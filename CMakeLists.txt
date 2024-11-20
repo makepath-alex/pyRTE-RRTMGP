@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.18...3.26)
 project(rte-rrtmgp)
 
-SET(RTE_RRTMGP_PATH /home/vkm/code/makepath/rte-rrtmgp/.git) # https://github.com/earth-system-radiation/rte-rrtmgp.git
+set(RTE_RRTMGP_REPO "https://github.com/earth-system-radiation/rte-rrtmgp.git" CACHE STRING "Link or Path to rte_rrtmgp repository")
+
 set(RTE_RRTMGP_DIR  ${CMAKE_SOURCE_DIR}/build/rte-rrtmgp/)
 set(RRTMGP_LIB_PATH ${RTE_RRTMGP_DIR}/build/rrtmgp-frontend/librrtmgp.a)
 set(RTE_LIB_PATH    ${RTE_RRTMGP_DIR}/build/rte-frontend/librte.a)
@@ -32,15 +33,14 @@ include(ExternalProject REQUIRED)
 # Build command for external project
 set(BUILD_COMMAND_STRING
     "rm -rf build && "
-    "mkdir build && "
-    "cd build && cmake .. -DRTE_KERNELS=default && "
-    "cmake --build . -j8"
+    "cmake . -B build -DRTE_KERNELS=default && "
+    "cmake --build build -j8"
     # "make -C build -j ${N}"
 )
 
 ExternalProject_Add(
     rte-rrtmgp
-    GIT_REPOSITORY ${RTE_RRTMGP_PATH}
+    GIT_REPOSITORY ${RTE_RRTMGP_REPO}
     GIT_TAG origin/cmake
     GIT_SHALLOW TRUE
     SOURCE_DIR ${RTE_RRTMGP_DIR}
