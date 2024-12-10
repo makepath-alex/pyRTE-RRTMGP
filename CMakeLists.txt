@@ -3,7 +3,7 @@ project(rte-rrtmgp)
 
 set(RTE_RRTMGP_REPO "https://github.com/earth-system-radiation/rte-rrtmgp.git" CACHE STRING "Link or Path to rte_rrtmgp repository")
 
-set(RTE_RRTMGP_DIR  ${CMAKE_SOURCE_DIR}/build/rte-rrtmgp/)
+set(RTE_RRTMGP_DIR  ${CMAKE_BINARY_DIR}/rte-rrtmgp/)
 set(RRTMGP_LIB_PATH ${RTE_RRTMGP_DIR}/build/rrtmgp-frontend/librrtmgp.a)
 set(RTE_LIB_PATH    ${RTE_RRTMGP_DIR}/build/rte-frontend/librte.a)
 
@@ -30,12 +30,17 @@ endif()
 # Include ExternalProject module
 include(ExternalProject REQUIRED)
 
+# TODO: Find a better way to build rte-rrtmgp
 # Build command for external project
 set(BUILD_COMMAND_STRING
-    "rm -rf build && "
-    "cmake . -B build -DRTE_KERNELS=default && "
-    "cmake --build build -j8"
-    # "make -C build -j ${N}"
+    "rm -rf build &&"
+    "cmake -S . -B build -G \"Ninja\" \
+        -DCMAKE_BUILD_TYPE=Debug \
+        -DRRTMGP_DATA_VERSION=v1.8.2 \
+        -DPRECISION=DP \
+        -DUSE_C_BOOL=ON \
+        -DKERNEL_MODE=default && "
+    "cmake --build build -- -j8"
 )
 
 ExternalProject_Add(
