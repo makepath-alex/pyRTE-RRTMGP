@@ -23,6 +23,7 @@ requirements:
     - cmake==3.26.4
     - git==2.44.0
     - make==4.3
+    - rte-rrtmgp
 
   host:
     - python
