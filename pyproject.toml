@@ -42,6 +42,11 @@ build-backend = "scikit_build_core.build"
 
 [tool.scikit-build]
 wheel.expand-macos-universal-tags = true
+cmake.args = [
+    "-G", "Ninja",
+    "--debug-output"
+]
+
 
 [tool.pytest.ini_options]
 minversion = "6.0"
@@ -49,7 +54,7 @@ addopts = ["-ra", "--showlocals", "--strict-markers", "--strict-config"]
 xfail_strict = true
 log_cli_level = "INFO"
 filterwarnings = ["error"]
-testpaths = ["tests"]
+testpaths = ["pyrte_rrtmgp/tests"]
 
 [tool.cibuildwheel]
 test-command = "pytest {project}/tests"
