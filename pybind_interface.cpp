@@ -1701,7 +1701,6 @@ PYBIND11_MODULE(pyrte_rrtmgp, m) {
         );
     });
 
-
     m.def("rrtmgp_compute_Planck_source",
     [](
         int ncol,
@@ -1820,7 +1819,7 @@ PYBIND11_MODULE(pyrte_rrtmgp, m) {
         if (band_lims_gpt.size() != 2 * nbnd)                    throw std::runtime_error("Invalid size for input array 'band_lims_gpt'");
         if (krayl.size()         != ntemp * neta * ngpt * 2)     throw std::runtime_error("Invalid size for input array 'krayl'");
         if (col_dry.size()       != ncol * nlay)                 throw std::runtime_error("Invalid size for input array 'col_dry'");
-        if (col_gas.size()       != ncol * nlay * ngas)          throw std::runtime_error("Invalid size for input array 'col_gas'");
+        if (col_gas.size()       != ncol * nlay * (ngas + 1))    throw std::runtime_error("Invalid size for input array 'col_gas'");
         if (fminor.size()        != 2 * 2 * ncol * nlay * nflav) throw std::runtime_error("Invalid size for input array 'fminor'");
         if (jeta.size()          != 2 * ncol * nlay * nflav)     throw std::runtime_error("Invalid size for input array 'jeta'");
         if (tropo.size()         != ncol * nlay)                 throw std::runtime_error("Invalid size for input array 'tropo'");
@@ -1970,9 +1969,9 @@ PYBIND11_MODULE(pyrte_rrtmgp, m) {
         if (re_bounds_ext.size() != nsizes + 1)                      throw std::runtime_error("Invalid size for input array 're_bounds_ext'");
         if (re_bounds_ssa.size() != nsizes + 1)                      throw std::runtime_error("Invalid size for input array 're_bounds_ssa'");
         if (re_bounds_asy.size() != nsizes + 1)                      throw std::runtime_error("Invalid size for input array 're_bounds_asy'");
-        if (coeffs_ext.size()    != nbnd * nsizes * (m_ext + n_ext)) throw std::runtime_error("Invalid size for input array 'coeffs_ext'");
-        if (coeffs_ssa.size()    != nbnd * nsizes * (m_ssa + n_ssa)) throw std::runtime_error("Invalid size for input array 'coeffs_ssa'");
-        if (coeffs_asy.size()    != nbnd * nsizes * (m_asy + n_asy)) throw std::runtime_error("Invalid size for input array 'coeffs_asy'");
+        if (coeffs_ext.size()    != nbnd * nsizes * (m_ext + n_ext + 1)) throw std::runtime_error("Invalid size for input array 'coeffs_ext'");
+        if (coeffs_ssa.size()    != nbnd * nsizes * (m_ssa + n_ssa + 1)) throw std::runtime_error("Invalid size for input array 'coeffs_ssa'");
+        if (coeffs_asy.size()    != nbnd * nsizes * (m_asy + n_asy + 1)) throw std::runtime_error("Invalid size for input array 'coeffs_asy'");
         if (tau.size()           != ncol * nlay * nbnd)              throw std::runtime_error("Invalid size for input array 'tau'");
         if (taussa.size()        != ncol * nlay * nbnd)              throw std::runtime_error("Invalid size for input array 'taussa'");
         if (taussag.size()       != ncol * nlay * nbnd)              throw std::runtime_error("Invalid size for input array 'taussag'");
