@@ -16,16 +16,16 @@ requirements:
   build:
     - {{ compiler('c') }}    # [unix]
     - {{ compiler('cxx') }}  # [unix]
-    - gfortran_linux-64   # [linux]
-    - gfortran_osx-64     # [osx]
-    - gcc==14.2.0         # [win]
-    - gxx==14.2.0         # [win]
-    - gfortran==14.2.0    # [win]
-    - libuv==1.44.2
-    - cmake==3.26.4
-    - git==2.44.0
+    - gfortran_linux-64      # [linux]
+    - gfortran_osx-64        # [osx]
+    - gcc ==14.2.0           # [win]
+    - gxx ==14.2.0           # [win]
+    - gfortran ==14.2.0      # [win]
+    - libuv ==1.44.2
+    - cmake ==3.26.4
+    - git ==2.44.0
     - ninja
-    - rte-rrtmgp
+    - rte-rrtmgp ==0.0.1
 
   host:
     - python
@@ -33,25 +33,25 @@ requirements:
     - scikit-build-core
     - pybind11 >=2.10.0
     - numpy >=1.21.0
-    - pytest>=7.4
+    - pytest >=7.4
 
   run:
     - python
     - numpy >=1.21.0
     - xarray >=2023.5.0
     - netcdf4 >=1.5.7
-    - requests>=2.4.0
-    - pytest>=7.4
+    - requests >=2.4.0
+    - pytest >=7.4
 
 test:
   imports:
     - pyrte_rrtmgp
   requires:
-    - numpy>=1.21
-    - pytest>=7.4
+    - numpy >=1.21
+    - pytest >=7.4
     - xarray >=2023.5.0
     - netcdf4 >=1.5.7
-    - requests>=2.4.0
+    - requests >=2.4.0
   commands:
     - pyrte_rrtmgp run_tests
 
