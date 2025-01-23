@@ -14,13 +14,15 @@ build:
 
 requirements:
   build:
-    - {{ compiler('c') }}    # [unix]
-    - {{ compiler('cxx') }}  # [unix]
-    - gfortran_linux-64      # [linux]
-    - gfortran_osx-64        # [osx]
-    - gcc ==14.2.0           # [win]
-    - gxx ==14.2.0           # [win]
-    - gfortran ==14.2.0      # [win]
+    - gcc_linux-64       # [linux]
+    - gxx_linux-64       # [linux]
+    - gfortran_linux-64  # [linux]
+    - clang_osx-64       # [osx]
+    - clangxx_osx-64     # [osx]
+    - gfortran_osx-64    # [osx]
+    - gcc_win-64         # [win]
+    - gxx_win-64         # [win]
+    - gfortran_win-64    # [win]
     - libuv ==1.44.2
     - cmake ==3.26.4
     - git ==2.44.0
