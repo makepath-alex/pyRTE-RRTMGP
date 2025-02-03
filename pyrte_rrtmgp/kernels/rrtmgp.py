@@ -177,7 +177,6 @@ def compute_planck_source(
         tropo: Troposphere mask with shape (ncol, nlay)
         jtemp: Temperature interpolation indices with shape (ncol, nlay)
         jpress: Pressure interpolation indices with shape (ncol, nlay)
-        gpoint_bands: ... (ngpt)
         band_lims_gpt: Band limits in g-point space with shape (2, nbnd)
         pfracin: Planck fractions with shape (ntemp, neta, npres+1, ngpt)
         temp_ref_min: Minimum reference temperature
@@ -193,7 +192,7 @@ def compute_planck_source(
             - sfc_src_jac: Surface emission Jacobian with shape (ncol, ngpt)
     """
     sfc_lay = nlay if top_at_1 else 1
-    gpoint_bands = np.ndarray((ngpt), dtype=np.int64, order="F")
+    gpoint_bands = []
     totplnk_delta = (temp_ref_max - temp_ref_min) / (nPlanckTemp - 1)
 
     # Initialize output arrays
@@ -426,7 +425,7 @@ def compute_tau_rayleigh(
         krayl: Rayleigh scattering coefficients with shape (ntemp, neta, ngpt, 2)
         idx_h2o: Index of water vapor
         col_dry: Dry air column amounts with shape (ncol, nlay)
-        col_gas: Gas concentrations with shape (ncol, nlay, ngas + 1)
+        col_gas: Gas concentrations with shape (ncol, nlay, ngas)
         fminor: Minor gas interpolation weights
         jeta: Eta interpolation indices
         tropo: Troposphere mask with shape (ncol, nlay)
@@ -437,8 +436,6 @@ def compute_tau_rayleigh(
     """
     # Initialize output array
     tau_rayleigh = np.ndarray((ncol, nlay, ngpt), dtype=np.float64, order="F")
-
-    ngas = ngas - 1 # Fortran uses index 0 here
 
     args = [
         ncol,
